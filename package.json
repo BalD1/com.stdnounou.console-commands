@@ -1,0 +1,13 @@
+{
+  "name": "com.stdnounou.console-commands",
+  "version": "1.0.3",
+  "displayName": "Console Commands",
+  "description": "This is a system that will let you create console commands.",
+  "unity": "2021.3",
+  "documentationUrl": "https://stdnounous-doc-1abfdd.webflow.io",
+  "author": {
+    "name": "BalD",
+    "email": "florianhusson1@gmail.com",
+    "url": "https://fh-portfolio-d3d69c.webflow.io"
+  }
+}
