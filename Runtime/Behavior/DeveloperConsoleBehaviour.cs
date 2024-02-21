@@ -20,10 +20,11 @@ namespace StdNounou.ConsoleCommands
         [SerializeField] private GameObject uiCanvas;
         [SerializeField] private TMP_InputField inputField;
         [SerializeField] private TextMeshProUGUI ghostInput;
-        [SerializeField] private TextMeshProUGUI historyField;
-        [SerializeField] private Scrollbar historyScrollbar;
+        private int ghostArgumentsStartIdx = -1;
+        [SerializeField] private TextMeshProUGUI consoleField;
+        [SerializeField] private Scrollbar consoleScrollbar;
 
-        [SerializeField] private bool showCommandsInHistory;
+        [SerializeField] private bool showCommandsInConsole;
         [SerializeField] private bool controlTimescale;
 
         private string propositionGhostCommand = "";
@@ -65,8 +66,8 @@ namespace StdNounou.ConsoleCommands
             commandsHistory.Add( new Tuple<IConsoleCommand, string[]>(cmd, args));
             if (commandsHistory.Count > cmdHistoryMaxSize)
                 commandsHistory.RemoveAt(commandsHistory.Count - 1);
-            if (!showCommandsInHistory) return;
-            AddTextToHistory(prefix + cmd.CommandKey);
+            if (!showCommandsInConsole) return;
+            AddTextToConsole(prefix + cmd.CommandKey);
         }
 
         public void Toggle(InputAction.CallbackContext ctx)
@@ -96,7 +97,7 @@ namespace StdNounou.ConsoleCommands
         {
             if (!inputValue.StartsWith(prefix))
             {
-                AddTextToHistory(inputValue);
+                AddTextToConsole(inputValue);
                 return;
             }
             DeveloperConsole.ProcessCommand(inputValue);
@@ -112,13 +113,20 @@ namespace StdNounou.ConsoleCommands
                 ghostInput.text = "";
                 return;
             }
-            IEnumerable<IConsoleCommand> matchingCommands = developerConsole.commands.Where(c => c.CommandKey.StartsWith(currentString.Remove(0, prefix.Length)));
+            IEnumerable<IConsoleCommand> matchingCommands = developerConsole.commands.Where(c => c.CommandKey.StartsWith(currentString.Remove(0, prefix.Length), StringComparison.OrdinalIgnoreCase));
             if (matchingCommands.Count() == 0)
             {
                 ghostInput.text = "";
                 return;
             }
-            propositionGhostCommand = prefix + matchingCommands.First().CommandKey;
+            StringBuilder sb = new StringBuilder(prefix);
+            sb.Append(matchingCommands.First().CommandKey);
+            propositionGhostCommand = sb.ToString();
+            sb.Append(" ");
+            ghostArgumentsStartIdx = sb.Length;
+            sb.Append(matchingCommands.First().CommandArguments);
+
+            propositionGhostCommand = sb.ToString();
             ghostInput.text = propositionGhostCommand;
         }
 
@@ -126,7 +134,8 @@ namespace StdNounou.ConsoleCommands
         {
             if (!ctx.performed) return;
             inputField.text = propositionGhostCommand;
-            inputField.selectionAnchorPosition = inputField.selectionFocusPosition = propositionGhostCommand.Length;
+            inputField.selectionAnchorPosition = ghostArgumentsStartIdx;
+            inputField.selectionFocusPosition = propositionGhostCommand.Length;
             Canvas.ForceUpdateCanvases();
         }
 
@@ -137,19 +146,19 @@ namespace StdNounou.ConsoleCommands
             ProcessCommand(inputField.text);
         }
 
-        public void AddTextToHistory(string txt)
+        public void AddTextToConsole(string txt)
         {
             StringBuilder sb = new StringBuilder("\n ");
             sb.Append("[");
             sb.Append(DateTime.Now.ToString("HH:mm:ss:ff"));
             sb.Append("] > ");
             sb.Append(txt);
-            historyField.text += sb.ToString();
+            consoleField.text += sb.ToString();
             inputField.text = string.Empty;
             inputField.ActivateInputField();
             inputField.selectionAnchorPosition = inputField.selectionFocusPosition = 0;
             Canvas.ForceUpdateCanvases();
-            historyScrollbar.value = 0;
+            consoleScrollbar.value = 0;
         }
 
         public void NavigateInHistoryToPosition(InputAction.CallbackContext ctx)

@@ -504,7 +504,7 @@ MonoBehaviour:
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
   m_ReadOnly: 0
-  m_RichText: 1
+  m_RichText: 0
   m_GlobalFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_OnFocusSelectAll: 1
   m_ResetOnDeActivation: 1
@@ -731,12 +731,16 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 35a25c58fad8a474f9b79e8e12137da1, type: 2}
   - {fileID: 11400000, guid: 9ecd3b43837f14b4a8dfae4e37d08bdf, type: 2}
   - {fileID: 11400000, guid: f9271216e1f12f343a0e95b3b971ca51, type: 2}
+  - {fileID: 11400000, guid: 6bf75d1f6edf74343b1cac69dd1034df, type: 2}
+  - {fileID: 11400000, guid: 35f60adb2f9fa704e88061c0bf15d42a, type: 2}
+  - {fileID: 11400000, guid: e2957e4579892a34a9dc3622c72fb22c, type: 2}
+  - {fileID: 11400000, guid: 0447eea757ab6ed45916c9c2c47ee894, type: 2}
   uiCanvas: {fileID: 9205253637029371912}
   inputField: {fileID: 9205253636305584481}
   ghostInput: {fileID: 9205253635745057240}
-  historyField: {fileID: 9205253637731679768}
-  historyScrollbar: {fileID: 9205253637474858594}
-  showCommandsInHistory: 0
+  consoleField: {fileID: 9205253637731679768}
+  consoleScrollbar: {fileID: 9205253637474858594}
+  showCommandsInConsole: 0
   controlTimescale: 1
   cmdHistoryMaxSize: 30
 --- !u!114 &9205253636973445267
@@ -1459,7 +1463,7 @@ GameObject:
   - component: {fileID: 9205253637731679768}
   - component: {fileID: 9205253637731679771}
   m_Layer: 5
-  m_Name: History
+  m_Name: Console
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
