@@ -1,6 +1,6 @@
 {
   "name": "com.stdnounou.console-commands",
-  "version": "1.0.3",
+  "version": "1.0.0",
   "displayName": "Console Commands",
   "description": "This is a system that will let you create console commands.",
   "unity": "2021.3",
@@ -9,5 +9,9 @@
     "name": "BalD",
     "email": "florianhusson1@gmail.com",
     "url": "https://fh-portfolio-d3d69c.webflow.io"
+  },
+    "dependencies": {
+    "com.unity.textmeshpro": "3.0.0",
+    "com.unity.inputsystem": "1.5.0"
   }
 }
