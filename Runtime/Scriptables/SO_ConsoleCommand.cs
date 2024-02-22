@@ -13,29 +13,56 @@ namespace StdNounou.ConsoleCommands
 
         public abstract bool Process(string[] args);
 
-        protected Vector3 ParseVector(string arg)
+        protected bool TryParseVector(string arg, out Vector3 result)
         {
-            string[] res = arg.Trim('{','}').Split(',');
+            string[] parsedStrings = arg.Trim('{','}').Split(',');
 
             float x, y, z = 0;
 
-            if (res.Length < 2 || res.Length > 3) 
+            if (parsedStrings.Length < 2 || parsedStrings.Length > 3) 
             {
                 this.LogError($"Could not parse {arg} to Vector. Wrong number of arguments.");
-                return Vector3.zero;
+                result = Vector3.zero;
+                return false;
             }
 
-            if (!float.TryParse(res[0], out x))
-                this.LogError($"Could not parse {res[0]} to Float as x.");
-            if (!float.TryParse(res[1], out y))
-                this.LogError($"Could not parse {res[1]} to Float as y.");
-            if (res.Length == 3)
+            if (!float.TryParse(parsedStrings[0], out x))
+                this.LogError($"Could not parse {parsedStrings[0]} to Float as x.");
+            if (!float.TryParse(parsedStrings[1], out y))
+                this.LogError($"Could not parse {parsedStrings[1]} to Float as y.");
+            if (parsedStrings.Length == 3)
             {
-                if (!float.TryParse(res[2], out z))
-                    this.LogError($"Could not parse {res[2]} to Float as z.");
+                if (!float.TryParse(parsedStrings[2], out z))
+                    this.LogError($"Could not parse {parsedStrings[2]} to Float as z.");
             }
 
-            return new Vector3(x, y, z);
+            result = new Vector3(x, y, z);
+            return true;
+        }
+
+        protected bool TryGetTargetObject(string arg, out GameObject obj, out bool foundByID)
+        {
+            if (int.TryParse(arg, out int id))
+            {
+                obj = (GameObject)DeveloperConsole.Instance.FindObjectFromInstanceID(id);
+                if (obj != null)
+                {
+                    foundByID = true;
+                    return true;
+                }
+            }
+
+            foundByID = false;
+
+            if (DeveloperConsole.Instance.SelectedObject == null)
+            {
+                this.LogError("Could not find target object. Please select one or specify an ID.");
+                obj = null;
+                return false;
+            }
+
+            obj = DeveloperConsole.Instance.SelectedObject;
+            return true;
         }
     }
 }

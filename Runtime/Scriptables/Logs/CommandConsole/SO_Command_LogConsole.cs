@@ -48,16 +48,16 @@ namespace StdNounou.ConsoleCommands
                     StringBuilder sb = new StringBuilder("<color=#FF0000>");
                     sb.Append(logText);
                     sb.Append("</color>");
-                    DeveloperConsoleBehaviour.Instance.AddTextToConsole(sb.ToString());
+                    DeveloperConsole.Instance.AddTextToConsole(sb.ToString());
                     break;
                 case LogType.Warning:
                     sb = new StringBuilder("<color=#FFFF00>");
                     sb.Append(logText);
                     sb.Append("</color>");
-                    DeveloperConsoleBehaviour.Instance.AddTextToConsole(sb.ToString());
+                    DeveloperConsole.Instance.AddTextToConsole(sb.ToString());
                     break;
                 case LogType.Log:
-                    DeveloperConsoleBehaviour.Instance.AddTextToConsole(logText);
+                    DeveloperConsole.Instance.AddTextToConsole(logText);
                     break;
             }
             return true;

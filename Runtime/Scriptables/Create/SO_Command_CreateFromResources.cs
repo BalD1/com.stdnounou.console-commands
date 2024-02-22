@@ -18,9 +18,12 @@ namespace StdNounou.ConsoleCommands
             Quaternion rot = Quaternion.identity;
 
             if (args.Length >= 2)
-                pos = ParseVector(args[1]);
+                TryParseVector(args[1], out pos);
             if (args.Length == 3)
-                rot.eulerAngles = ParseVector(args[2]);
+            {
+                if (TryParseVector(args[2], out Vector3 eulerAngles))
+                    rot.eulerAngles = eulerAngles;
+            }
 
             return CreateObject(pos, rot, args[0]);
         }

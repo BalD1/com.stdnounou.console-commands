@@ -3,6 +3,8 @@
     "rootNamespace": "StdNounou.ConsoleCommands",
     "references": [
         "GUID:07390520b8bc5a54cb973a134834aabf",
+        "GUID:0d65812dd7a6e7240960aa6f680de626",
+        "GUID:6ddfdff7ac37b354883336b81ebb5114",
         "GUID:6055be8ebefd69e48b49212b09b47b2f",
         "GUID:75469ad4d38634e559750d17036d5f7c"
     ],
