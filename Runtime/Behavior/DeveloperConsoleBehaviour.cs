@@ -1,13 +1,13 @@
-using StdNounou.Core;
-using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
-using System.Text;
-using System;
 using UnityEngine.UI;
+using TMPro;
+using System;
+using System.Text;
 using System.Collections.Generic;
 using System.Linq;
+using StdNounou.Core;
 
 namespace StdNounou.ConsoleCommands
 {
@@ -26,6 +26,8 @@ namespace StdNounou.ConsoleCommands
 
         [SerializeField] private bool showCommandsInConsole;
         [SerializeField] private bool controlTimescale;
+
+        private GameObject selectedObject;
 
         private string propositionGhostCommand = "";
 
@@ -61,6 +63,35 @@ namespace StdNounou.ConsoleCommands
             DeveloperConsole.OnActivatedCommand += OnActivatedCommand;
         }
 
+        private void Update()
+        {
+            if (Input.GetMouseButtonDown(0))
+                RaycastToAnyObj();
+        }
+
+        private void RaycastToAnyObj()
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out var hitInfo, Mathf.Infinity))
+            {
+                GameObject hitObject = hitInfo.collider.gameObject;
+                StringBuilder sb = new StringBuilder("DEBUG_ITEM : <color=#0080ff>");
+                sb.Append(hitObject.name);
+                sb.Append("</color> \n");
+                sb.Append("> ID : ");
+                sb.Append(hitObject.GetInstanceID());
+                AddTextToConsole(sb.ToString());
+                selectedObject = hitObject;
+            }
+        }
+
+        public UnityEngine.Object FindObjectFromInstanceID(int iid)
+        {
+            return (UnityEngine.Object)typeof(UnityEngine.Object)
+            .GetMethod("FindObjectFromInstanceID", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static)
+            .Invoke(null, new object[] { iid });
+        }
+
         private void OnActivatedCommand(IConsoleCommand cmd, string[] args)
         {
             commandsHistory.Add( new Tuple<IConsoleCommand, string[]>(cmd, args));
@@ -80,6 +111,8 @@ namespace StdNounou.ConsoleCommands
                     Time.timeScale = pausedTimedScale;
                 uiCanvas.SetActive(false);
                 positionInHistory = -1;
+                this.enabled = false;
+                selectedObject = null;
             }
             else
             {
@@ -90,6 +123,7 @@ namespace StdNounou.ConsoleCommands
                 }
                 uiCanvas.SetActive(true);
                 inputField.ActivateInputField();
+                this.enabled = true;
             }
         }
 

@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: ErrorLog
   m_EditorClassIdentifier: 
   commandKey: logError
-  commandArguments: <string>
+  commandArguments: <string>:log
   logType: 0

@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: WarningLog
   m_EditorClassIdentifier: 
   commandKey: logWarning
-  commandArguments: <string>
+  commandArguments: <string>:log
   logType: 2

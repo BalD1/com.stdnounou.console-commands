@@ -10,7 +10,7 @@ namespace StdNounou.ConsoleCommands
         {
             if (args.Length != 1)
             {
-                this.LogError($"Command TimeScale requires exactly one argument.");
+                this.LogError("Command TimeScale requires exactly one argument.");
                 return false;
             }
             if (!float.TryParse(args[0], out float result))

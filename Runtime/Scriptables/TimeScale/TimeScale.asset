@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: TimeScale
   m_EditorClassIdentifier: 
   commandKey: timeScale
-  commandArguments: <float>
+  commandArguments: <float>:scale

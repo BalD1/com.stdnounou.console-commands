@@ -720,7 +720,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9205253636973445229}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c3aa7bf5cba7365429ea95aa42cf01ec, type: 3}
   m_Name: 
@@ -735,6 +735,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 35f60adb2f9fa704e88061c0bf15d42a, type: 2}
   - {fileID: 11400000, guid: e2957e4579892a34a9dc3622c72fb22c, type: 2}
   - {fileID: 11400000, guid: 0447eea757ab6ed45916c9c2c47ee894, type: 2}
+  - {fileID: 11400000, guid: 158c389945a4371408fc95091a3517c6, type: 2}
   uiCanvas: {fileID: 9205253637029371912}
   inputField: {fileID: 9205253636305584481}
   ghostInput: {fileID: 9205253635745057240}

@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: SimpleLogConsole
   m_EditorClassIdentifier: 
   commandKey: logConsole
-  commandArguments: <string>
+  commandArguments: <string>:log
   logType: 3
