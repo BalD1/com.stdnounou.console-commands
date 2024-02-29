@@ -42,26 +42,52 @@ namespace StdNounou.ConsoleCommands
 
         protected bool TryGetTargetObject(string arg, out GameObject obj, out bool foundByID)
         {
-            if (int.TryParse(arg, out int id))
-            {
-                obj = (GameObject)DeveloperConsole.Instance.FindObjectFromInstanceID(id);
-                if (obj != null)
-                {
-                    foundByID = true;
-                    return true;
-                }
-            }
-
+            obj = null;
             foundByID = false;
 
-            if (DeveloperConsole.Instance.SelectedObject == null)
+            if (DeveloperConsole.Instance.SelectedObject != null)
             {
-                this.LogError("Could not find target object. Please select one or specify an ID.");
-                obj = null;
-                return false;
+                obj = DeveloperConsole.Instance.SelectedObject;
+                foundByID = false;
+                return true;
             }
 
-            obj = DeveloperConsole.Instance.SelectedObject;
+            if (int.TryParse(arg, out int id))
+            {
+                Object foundObj = GameObjectExtensions.FindObjectFromInstanceID(id);
+                if (foundObj is GameObject)
+                {
+                    obj = (GameObject)GameObjectExtensions.FindObjectFromInstanceID(id);
+                    if (obj != null)
+                    {
+                        foundByID = true;
+                        return true;
+                    }
+                }
+                else
+                    this.LogError($"Object with ID \"{arg}\" was not a gameobject.");
+            }
+
+            this.LogError("Could not find target object. Please select one or specify an ID.");
+            return true;
+        }
+
+        protected bool SearchComponent<T>(GameObject target, out T result) where T : Component
+        {
+            result = null;
+            if (!target.TryGetComponent(out result))
+            {
+                result = target.GetComponentInChildren<T>();
+                if (result == null)
+                {
+                    result = target.GetComponentInParent<T>();
+                    if (result == null)
+                    {
+                        this.LogError("Could not find Health System on specified object.");
+                        return false;
+                    }
+                }
+            }
             return true;
         }
     }

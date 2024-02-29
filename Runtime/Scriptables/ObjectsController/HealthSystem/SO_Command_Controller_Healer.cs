@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace StdNounou.ConsoleCommands
 {
-    [CreateAssetMenu(fileName = "New Damager Command", menuName = "StdNounou/Scriptables/Console/Damager Command", order = 400)]
-    public class SO_Command_Controller_Damager : SO_ConsoleCommand
+    [CreateAssetMenu(fileName = "New Healer Command", menuName = "StdNounou/Scriptables/Console/Healer Command", order = 400)]
+    public class SO_Command_Controller_Healer : SO_ConsoleCommand
     {
         public override bool Process(string[] args)
         {
@@ -22,10 +22,10 @@ namespace StdNounou.ConsoleCommands
                 return false;
 
             bool isCrit = false;
-            if (args.Length > (foundByID ? 2 : 1)) 
+            if (args.Length > (foundByID ? 2 : 1))
                 bool.TryParse(args[foundByID ? 2 : 1], out isCrit);
 
-            targetSystem.TryInflictDamages(damages, isCrit);
+            targetSystem.Heal(damages, isCrit);
             return true;
         }
     }

@@ -25,6 +25,8 @@ namespace StdNounou.ConsoleCommands
         [SerializeField] private TextMeshProUGUI selectedItemTMP;
         [SerializeField] private Scrollbar consoleScrollbar;
 
+        [SerializeField] private Button inspectBtn; 
+
         [SerializeField] private bool showCommandsInConsole;
         [SerializeField] private bool controlTimescale;
 
@@ -32,12 +34,20 @@ namespace StdNounou.ConsoleCommands
 
         private string propositionGhostCommand = "";
         private const string SELECTED_OBJECT_FORMAT = "Selected : {0}";
+        private string oldInput = string.Empty;
 
         private float pausedTimedScale;
 
         [SerializeField] private int cmdHistoryMaxSize = 10;
         private List<Tuple<IConsoleCommand, string[]>> commandsHistory;
         private int positionInHistory = -1;
+
+        private readonly Dictionary<char, char> charactersToDouble = new Dictionary<char, char>
+        {
+            { '"', '"' }, { '\'', '\'' }, { '%', '%' }, { '{', '}' }, { '(', ')' }, { '[', ']' }, { '<', '>' }
+        };
+
+        //{ '"', '\'', '{', '(', '[', '<', '%'  };
 
         private void OnValidate()
         {
@@ -87,20 +97,15 @@ namespace StdNounou.ConsoleCommands
             sb.Append("> ID : ");
             sb.Append(obj.GetInstanceID());
             AddTextToConsole(sb.ToString());
+            inspectBtn.gameObject.SetActive(true);
             this.OnSelectedObject_Call(obj);
         }
         private void UnselectObject()
         {
             SelectedObject = null;
             selectedItemTMP.text = string.Format(SELECTED_OBJECT_FORMAT, "NONE");
+            inspectBtn.gameObject.SetActive(false);
             this.OnUnselectedObject_Call();
-        }
-
-        public UnityEngine.Object FindObjectFromInstanceID(int iid)
-        {
-            return (UnityEngine.Object)typeof(UnityEngine.Object)
-            .GetMethod("FindObjectFromInstanceID", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static)
-            .Invoke(null, new object[] { iid });
         }
 
         private void OnActivatedCommand(IConsoleCommand cmd, string[] args)
@@ -124,7 +129,7 @@ namespace StdNounou.ConsoleCommands
                 uiCanvas.SetActive(false);
                 positionInHistory = -1;
                 this.enabled = false;
-                SelectedObject = null;
+                UnselectObject();
             }
             else
             {
@@ -180,6 +185,28 @@ namespace StdNounou.ConsoleCommands
 
         public void OnInputFieldValueChanged(string currentString)
         {
+            if (currentString.Length > oldInput.Length)
+                TryDoubleLastCharacter();
+            ProcessGhostCommand(currentString);
+            oldInput = currentString;
+        }
+
+        private bool TryDoubleLastCharacter()
+        {
+            char lastCharOfInput = inputField.text.Last();
+            if (!charactersToDouble.TryGetValue(lastCharOfInput, out char characterToAdd))
+                return false;
+            if (lastCharOfInput == characterToAdd &&
+                inputField.text.Length > 1 && 
+                inputField.text[inputField.text.Length - 2] == lastCharOfInput)
+                return false;
+
+            inputField.text += characterToAdd;
+            return true;
+        }
+
+        private void ProcessGhostCommand(string currentString)
+        {
             if (currentString.Length <= prefix.Length)
             {
                 ghostInput.text = "";
@@ -193,12 +220,11 @@ namespace StdNounou.ConsoleCommands
             }
             StringBuilder sb = new StringBuilder(prefix);
             sb.Append(matchingCommands.First().CommandKey);
-            propositionGhostCommand = sb.ToString();
             sb.Append(" ");
             ghostArgumentsStartIdx = sb.Length;
             sb.Append(matchingCommands.First().CommandArguments);
 
-            propositionGhostCommand = sb.ToString();
+            propositionGhostCommand = sb.Remove(0, currentString.Length).Insert(0, currentString).ToString();
             ghostInput.text = propositionGhostCommand;
         }
 

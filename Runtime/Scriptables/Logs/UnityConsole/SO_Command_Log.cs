@@ -12,7 +12,7 @@ namespace StdNounou.ConsoleCommands
         [SerializeField] private LogType logType;
 
         private const string baliseRegexExpression = "%[^%]+%";
-        private readonly Regex baliseRegex = new Regex(baliseRegexExpression);
+        private readonly Regex baliseRegex = new Regex(baliseRegexExpression, RegexOptions.IgnoreCase);
 
         private readonly Dictionary<string, Func<string>> expressionsProcess = new Dictionary<string, Func<string>>
         {
