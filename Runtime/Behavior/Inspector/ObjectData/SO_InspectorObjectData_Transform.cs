@@ -32,9 +32,5 @@ namespace StdNounou.ConsoleCommands
             sb.AppendLine(transform.localScale.ToString());
             return sb.ToString();
         }
-
-        public void Update()
-        {
-        }
     } 
 }

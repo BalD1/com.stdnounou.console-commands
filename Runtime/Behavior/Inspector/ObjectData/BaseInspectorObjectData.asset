@@ -14,5 +14,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Data>k__BackingField:
     _serializedList:
+    - Key: MeshFilter
+      Value: {fileID: 11400000, guid: c5e482461adca39488782e5141770984, type: 2}
+    - Key: MeshRenderer
+      Value: {fileID: 11400000, guid: 554cf380a28b4fa44a9f8ca801cc0401, type: 2}
     - Key: Transform
       Value: {fileID: 11400000, guid: 4631f04d957c60541a317a63d78fb867, type: 2}
+    - Key: Collider
+      Value: {fileID: 11400000, guid: b1d157dd4ca76d64ca82992e5d920c89, type: 2}
+    - Key: BoxCollider
+      Value: {fileID: 11400000, guid: b1d157dd4ca76d64ca82992e5d920c89, type: 2}
+    - Key: BoxCollider2D
+      Value: {fileID: 11400000, guid: b1d157dd4ca76d64ca82992e5d920c89, type: 2}
+    - Key: CircleCollider
+      Value: {fileID: 11400000, guid: b1d157dd4ca76d64ca82992e5d920c89, type: 2}
+    - Key: CircleCollider2D
+      Value: {fileID: 11400000, guid: b1d157dd4ca76d64ca82992e5d920c89, type: 2}
+    - Key: CapsuleCollider
+      Value: {fileID: 11400000, guid: b1d157dd4ca76d64ca82992e5d920c89, type: 2}
+    - Key: CapsuleCollider2D
+      Value: {fileID: 11400000, guid: b1d157dd4ca76d64ca82992e5d920c89, type: 2}

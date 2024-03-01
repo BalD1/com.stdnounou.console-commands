@@ -258,6 +258,8 @@ namespace StdNounou.ConsoleCommands
             Canvas.ForceUpdateCanvases();
             consoleScrollbar.value = 0;
         }
+        public string GetConsoleText()
+            => consoleField.text;
 
         public void NavigateInHistoryToPosition(InputAction.CallbackContext ctx)
         {
