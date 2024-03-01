@@ -1,18 +1,35 @@
 using StdNounou.Core;
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace StdNounou.ConsoleCommands
 {
-    public class Hierarchy : MonoBehaviour
+    public class Hierarchy : MonoBehaviourEventsHandler
     {
         [SerializeField] private HierarchyObject objPrefab;
         [SerializeField] private RectTransform container;
         [SerializeField] private int childLeftPadding = 20;
         [SerializeField] private Scrollbar scrollbar;
         [SerializeField] private ScrollRect scrollrect;
+        [SerializeField] private Button closeHierarchyBtn;
         private HierarchyObject[] objects;
+
+        public event Action<GameObject> OnOpenedHierarchy;
+        public event Action OnClosedHierarchy;
+
+        private bool isActive = false;
+
+        protected override void EventsSubscriber()
+        {
+            DeveloperConsoleEvents.OnUnSelectedObject += Close;
+        }
+
+        protected override void EventsUnSubscriber()
+        {
+            DeveloperConsoleEvents.OnUnSelectedObject -= Close;
+        }
 
         public void BuildHierarchyFromConsoleSelected()
         {
@@ -20,7 +37,9 @@ namespace StdNounou.ConsoleCommands
         }
         public void BuildHierarchy(Transform targetObj)
         {
+            closeHierarchyBtn.gameObject.SetActive(true);
             this.gameObject.SetActive(true);
+            isActive = true;
             if (objects != null)
             {
                 for (int i = 0; i < objects.Length; i++)
@@ -53,7 +72,23 @@ namespace StdNounou.ConsoleCommands
                 nextItemIdx++;
             }
 
+            OnOpenedHierarchy?.Invoke(targetObj.gameObject);
             StartCoroutine(WaitForNextFrame());
+        }
+        public void Close()
+        {
+            isActive = false;
+            closeHierarchyBtn.gameObject.SetActive(false);
+            if (objects != null)
+            {
+                for (int i = 0; i < objects.Length; i++)
+                {
+                    Destroy(objects[i].gameObject);
+                }
+            }
+            objects = null;
+            OnClosedHierarchy?.Invoke();
+            this.gameObject.SetActive(false);
         }
 
         private IEnumerator WaitForNextFrame()
@@ -72,6 +107,7 @@ namespace StdNounou.ConsoleCommands
         private void OnObjectClicked(HierarchyObject obj)
         {
             BuildHierarchy(obj.TargetObj.transform);
+            DeveloperConsole.Instance.SelectObject(obj.TargetObj);
         }
     }
 }

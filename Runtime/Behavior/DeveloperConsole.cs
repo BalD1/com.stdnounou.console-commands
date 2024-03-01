@@ -47,8 +47,6 @@ namespace StdNounou.ConsoleCommands
             { '"', '"' }, { '\'', '\'' }, { '%', '%' }, { '{', '}' }, { '(', ')' }, { '[', ']' }, { '<', '>' }
         };
 
-        //{ '"', '\'', '{', '(', '[', '<', '%'  };
-
         private void OnValidate()
         {
             selectedItemTMP.text = string.Format(SELECTED_OBJECT_FORMAT, "NONE");
@@ -72,6 +70,8 @@ namespace StdNounou.ConsoleCommands
         {
             if (Input.GetMouseButtonDown(0))
                 RaycastToAnyObj();
+            if (Input.GetMouseButtonDown(1))
+                UnselectObject();
         }
 
         private void RaycastToAnyObj()
@@ -87,7 +87,7 @@ namespace StdNounou.ConsoleCommands
             }
         }
 
-        private void SelectObject(GameObject obj)
+        public void SelectObject(GameObject obj)
         {
             SelectedObject = obj;
             selectedItemTMP.text = string.Format(SELECTED_OBJECT_FORMAT, SelectedObject.name);

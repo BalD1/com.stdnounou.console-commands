@@ -9,8 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ddea8d93f1b1164ab37c52db66fa6b5, type: 3}
-  m_Name: TransformController
+  m_Script: {fileID: 11500000, guid: 7ee00be874fca724aaf3bae35c4329b7, type: 3}
+  m_Name: BaseInspectorObjectData
   m_EditorClassIdentifier: 
-  commandKey: CtrlTransform
-  commandArguments: '(int):ID (bool):local <vector>: position (vector):rotation'
+  <Data>k__BackingField:
+    _serializedList:
+    - Key: Transform
+      Value: {fileID: 11400000, guid: 4631f04d957c60541a317a63d78fb867, type: 2}

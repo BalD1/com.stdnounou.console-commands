@@ -17,7 +17,12 @@ namespace StdNounou.ConsoleCommands
             if (!TryGetTargetObject(args[0], out GameObject target, out bool foundByID))
                 return false;
 
-            if (TryParseVector(args[foundByID ? 1 : 0], out Vector3 position))
+            int nextArgIdx = foundByID ? 1 : 0;
+
+            if (TryParseArg(args, nextArgIdx, out bool asLocal))
+                nextArgIdx++;
+
+            if (args.Length == nextArgIdx + 1 && TryParseVector(args[nextArgIdx], out Vector3 position))
             {
                 if (target == null)
                 {
@@ -25,13 +30,27 @@ namespace StdNounou.ConsoleCommands
                     return false;
                 }
 
-                target.transform.position = position;
+                if (asLocal)
+                    target.transform.localPosition = position;
+                else
+                    target.transform.position = position;
+                nextArgIdx++;
 
-                if (args.Length == (foundByID ? 3 : 2) && TryParseVector(args[foundByID ? 2 : 1], out Vector3 euleurAngles))
+                if (args.Length == nextArgIdx + 1 && TryParseVector(args[nextArgIdx], out Vector3 euleurAngles))
                 {
-                    Quaternion objRotation = target.transform.localRotation;
-                    objRotation.eulerAngles = euleurAngles;
-                    target.transform.localRotation = objRotation;
+                    if (asLocal)
+                    {
+                        Quaternion objRotation = target.transform.localRotation;
+                        objRotation.eulerAngles = euleurAngles;
+                        target.transform.localRotation = objRotation;
+                    }
+                    else
+                    {
+                        Quaternion objRotation = target.transform.rotation;
+                        objRotation.eulerAngles = euleurAngles;
+                        target.transform.rotation = objRotation;
+                    }
+                    nextArgIdx++;
                 }
 
                 return true;
