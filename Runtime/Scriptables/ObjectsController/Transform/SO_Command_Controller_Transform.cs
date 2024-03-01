@@ -19,10 +19,9 @@ namespace StdNounou.ConsoleCommands
 
             int nextArgIdx = foundByID ? 1 : 0;
 
-            if (TryParseArg(args, nextArgIdx, out bool asLocal))
-                nextArgIdx++;
+            TryParseArg(args, ref nextArgIdx, out bool asLocal);
 
-            if (args.Length == nextArgIdx + 1 && TryParseVector(args[nextArgIdx], out Vector3 position))
+            if (TryParseArg(args, ref nextArgIdx, out Vector3 position))
             {
                 if (target == null)
                 {
@@ -34,24 +33,25 @@ namespace StdNounou.ConsoleCommands
                     target.transform.localPosition = position;
                 else
                     target.transform.position = position;
-                nextArgIdx++;
 
-                if (args.Length == nextArgIdx + 1 && TryParseVector(args[nextArgIdx], out Vector3 euleurAngles))
+                if (TryParseArg(args, ref nextArgIdx, out Vector3 eulerAngles))
                 {
                     if (asLocal)
                     {
                         Quaternion objRotation = target.transform.localRotation;
-                        objRotation.eulerAngles = euleurAngles;
+                        objRotation.eulerAngles = eulerAngles;
                         target.transform.localRotation = objRotation;
                     }
                     else
                     {
                         Quaternion objRotation = target.transform.rotation;
-                        objRotation.eulerAngles = euleurAngles;
+                        objRotation.eulerAngles = eulerAngles;
                         target.transform.rotation = objRotation;
                     }
-                    nextArgIdx++;
                 }
+
+                if (TryParseArg(args, ref nextArgIdx, out Vector3 scale))
+                    target.transform.localScale = scale;
 
                 return true;
             }

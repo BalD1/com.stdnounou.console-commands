@@ -24,8 +24,13 @@ namespace StdNounou.ConsoleCommands
             { typeof(Vector3), (input) => { if (TryParseVector(input, out Vector3 v3Res)) return (true, v3Res); else return (false, null); } },
         };
 
-        protected bool TryParseArg<T>(string[] args, int targetIdx, out T result)
+        protected bool TryParseArg<T>(string[] args, ref int targetIdx, out T result)
         {
+            if (targetIdx >= args.Length)
+            {
+                result = default(T);
+                return false;
+            }
             if (!parsers.ContainsKey(typeof(T)))
             {
                 this.LogError("Could not find defined behavior for type " + typeof(T));
@@ -36,6 +41,7 @@ namespace StdNounou.ConsoleCommands
             var (success, value) = parsers[typeof(T)](args[targetIdx]);
             if (success)
             {
+                targetIdx++;
                 result = (T)value;
                 return true;
             }
