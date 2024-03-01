@@ -1,6 +1,7 @@
 using StdNounou.Core;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using UnityEngine;
 
 namespace StdNounou.ConsoleCommands
@@ -62,13 +63,13 @@ namespace StdNounou.ConsoleCommands
                 return false;
             }
 
-            if (!float.TryParse(parsedStrings[0], out x))
+            if (!float.TryParse(parsedStrings[0], NumberStyles.Float, CultureInfo.InvariantCulture, out x))
                 CustomLogger.LogError(typeof(SO_ConsoleCommand), $"Could not parse {parsedStrings[0]} to Float as x.");
-            if (!float.TryParse(parsedStrings[1], out y))
+            if (!float.TryParse(parsedStrings[1], NumberStyles.Float, CultureInfo.InvariantCulture, out y))
                 CustomLogger.LogError(typeof(SO_ConsoleCommand), $"Could not parse {parsedStrings[1]} to Float as y.");
             if (parsedStrings.Length == 3)
             {
-                if (!float.TryParse(parsedStrings[2], out z))
+                if (!float.TryParse(parsedStrings[2], NumberStyles.Float, CultureInfo.InvariantCulture, out z))
                     CustomLogger.LogError(typeof(SO_ConsoleCommand), $"Could not parse {parsedStrings[2]} to Float as z.");
             }
 
@@ -76,7 +77,7 @@ namespace StdNounou.ConsoleCommands
             return true;
         }
 
-        protected bool TryGetTargetObject(string arg, out GameObject obj, out bool foundByID)
+        protected bool TryGetTargetObject(string arg, out GameObject obj, out bool foundByID, out int nextArgIdx)
         {
             obj = null;
             foundByID = false;
@@ -85,6 +86,7 @@ namespace StdNounou.ConsoleCommands
             {
                 obj = DeveloperConsole.Instance.SelectedObject;
                 foundByID = false;
+                nextArgIdx = 0;
                 return true;
             }
 
@@ -97,6 +99,7 @@ namespace StdNounou.ConsoleCommands
                     if (obj != null)
                     {
                         foundByID = true;
+                        nextArgIdx = 1;
                         return true;
                     }
                 }
@@ -105,7 +108,8 @@ namespace StdNounou.ConsoleCommands
             }
 
             this.LogError("Could not find target object. Please select one or specify an ID.");
-            return true;
+            nextArgIdx = 0;
+            return false;
         }
 
         protected bool SearchComponent<T>(GameObject target, out T result) where T : Component

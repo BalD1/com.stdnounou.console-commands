@@ -19,6 +19,7 @@ namespace StdNounou.ConsoleCommands
                 return false;
             }
             Time.timeScale = result;
+            DeveloperConsole.Instance.AddTextToConsole($"<b>Set TimeScale to {result}.</b>");
             return true;
         }
     }

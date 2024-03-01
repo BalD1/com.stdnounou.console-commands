@@ -68,9 +68,9 @@ namespace StdNounou.ConsoleCommands
 
         private void Update()
         {
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0) && !Input.GetKey(KeyCode.LeftControl))
                 RaycastToAnyObj();
-            if (Input.GetMouseButtonDown(1))
+            if (Input.GetMouseButtonDown(1) && !Input.GetKey(KeyCode.LeftControl))
                 UnselectObject();
         }
 

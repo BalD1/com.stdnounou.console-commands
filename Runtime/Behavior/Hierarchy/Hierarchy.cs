@@ -19,8 +19,6 @@ namespace StdNounou.ConsoleCommands
         public event Action<GameObject> OnOpenedHierarchy;
         public event Action OnClosedHierarchy;
 
-        private bool isActive = false;
-
         protected override void EventsSubscriber()
         {
             DeveloperConsoleEvents.OnUnSelectedObject += Close;
@@ -39,7 +37,6 @@ namespace StdNounou.ConsoleCommands
         {
             closeHierarchyBtn.gameObject.SetActive(true);
             this.gameObject.SetActive(true);
-            isActive = true;
             if (objects != null)
             {
                 for (int i = 0; i < objects.Length; i++)
@@ -77,7 +74,6 @@ namespace StdNounou.ConsoleCommands
         }
         public void Close()
         {
-            isActive = false;
             closeHierarchyBtn.gameObject.SetActive(false);
             if (objects != null)
             {

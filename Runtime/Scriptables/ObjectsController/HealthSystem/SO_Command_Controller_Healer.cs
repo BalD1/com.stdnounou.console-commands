@@ -9,10 +9,10 @@ namespace StdNounou.ConsoleCommands
     {
         public override bool Process(string[] args)
         {
-            if (!TryGetTargetObject(args[0], out GameObject target, out bool foundByID))
+            if (!TryGetTargetObject(args[0], out GameObject target, out bool foundByID, out int nextArgIdx))
                 return false;
 
-            if (!float.TryParse(args[foundByID ? 1 : 0], out float damages))
+            if (!TryParseArg(args, ref nextArgIdx, out float damages))
             {
                 this.LogError("Wrong parameters format for Damager Command. float was expected.");
                 return false;
@@ -21,10 +21,7 @@ namespace StdNounou.ConsoleCommands
             if (!SearchComponent(target, out HealthSystem targetSystem))
                 return false;
 
-            bool isCrit = false;
-            if (args.Length > (foundByID ? 2 : 1))
-                bool.TryParse(args[foundByID ? 2 : 1], out isCrit);
-
+            TryParseArg(args, ref nextArgIdx, out bool isCrit);
             targetSystem.Heal(damages, isCrit);
             return true;
         }

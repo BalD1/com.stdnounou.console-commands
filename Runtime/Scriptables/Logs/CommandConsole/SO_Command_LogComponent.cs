@@ -65,13 +65,13 @@ namespace StdNounou.ConsoleCommands
 
         public override bool Process(string[] args)
         {
-            if (!TryGetTargetObject(args[0], out GameObject target, out bool foundByID))
+            if (!TryGetTargetObject(args[0], out GameObject target, out bool foundByID, out int nextArgIdx))
             {
                 this.LogError("LogComponent Command failed. Please specify an object ID or select one.");
                 return false;
             }
 
-            string logText = string.Join(" ", args, foundByID ? 1 : 0, foundByID ? args.Length - 1 : args.Length);
+            string logText = string.Join(" ", args, nextArgIdx, foundByID ? args.Length - 1 : args.Length);
             MatchCollection regexMatches = baliseRegex.Matches(logText);
             foreach (Match match in regexMatches)
             {

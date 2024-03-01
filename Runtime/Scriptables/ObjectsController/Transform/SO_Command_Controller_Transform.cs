@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace StdNounou.ConsoleCommands
 {
-    [CreateAssetMenu(fileName = "New Transform Controller", menuName = "StdNounou/Scriptables/Console/Transform Controller", order = 400)]
+    [CreateAssetMenu(fileName = "New Transform Controller", menuName = "StdNounou/Scriptables/Console/Transform Controller", order = 410)]
     public class SO_Command_Controller_Transform : SO_ConsoleCommand
     {
         public override bool Process(string[] args)
@@ -14,10 +14,8 @@ namespace StdNounou.ConsoleCommands
                 return false;
             }
 
-            if (!TryGetTargetObject(args[0], out GameObject target, out bool foundByID))
+            if (!TryGetTargetObject(args[0], out GameObject target, out bool foundByID, out int nextArgIdx))
                 return false;
-
-            int nextArgIdx = foundByID ? 1 : 0;
 
             TryParseArg(args, ref nextArgIdx, out bool asLocal);
 
